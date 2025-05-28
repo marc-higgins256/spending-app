@@ -1,0 +1,61 @@
+/* Centralized styles for the Spending App */
+@import './Login.css';
+@import './SignUp.css';
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+h1, h2 {
+  color: #2d2d2d;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.container, .login-container, .signup-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin: 2rem auto;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 1em;
+}
+button:disabled {
+  background: #b3d1ff;
+  cursor: not-allowed;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.login-message, .signup-message {
+  margin-top: 1em;
+  color: #d9534f;
+}

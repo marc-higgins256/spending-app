@@ -1,0 +1,9 @@
+// frontend.http - Use this file to test your frontend API endpoints or mock requests
+// @frontend_HostAddress is a variable for your frontend's base URL
+@frontend_HostAddress = http://localhost:5080
+
+###
+// Add your own API requests below. Example:
+// GET {{frontend_HostAddress}}/api/your-endpoint
+// Accept: application/json
+###

@@ -1,0 +1,9 @@
+// backend.http - Use this file to test your backend API endpoints
+// @backend_HostAddress is a variable for your backend's base URL
+@backend_HostAddress = http://localhost:5097
+
+###
+// Add your own API requests below. Example:
+// GET {{backend_HostAddress}}/api/your-endpoint
+// Accept: application/json
+###

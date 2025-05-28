@@ -1,0 +1,4 @@
+# Ignore Copilot and chat/config files
+.copilot/
+.github/copilot-instructions.md
+.copilot-instructions.md

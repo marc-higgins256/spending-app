@@ -1,0 +1,16 @@
+/* Center content vertically and horizontally for the landing page */
+.landing-center {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Layout and spacing for the Login and Sign Up links */
+.landing-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
