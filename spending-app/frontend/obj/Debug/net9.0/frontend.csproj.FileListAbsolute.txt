@@ -1,7 +1,0 @@
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.csproj.AssemblyReference.cache
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.AssemblyInfoInputs.cache
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.AssemblyInfo.cs
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.csproj.CoreCompileInputs.cache
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\sk8te\Documents\Development\spending-app\frontend\obj\Debug\net9.0\frontend.MvcApplicationPartsAssemblyInfo.cache
