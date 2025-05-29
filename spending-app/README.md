@@ -3,26 +3,73 @@
 This is a full-stack project with:
 - React frontend (Vite) in `frontend/`
 - C# ASP.NET Core backend in `backend/`
-- MySQL database (setup instructions/scripts to be added)
+- MySQL database
 
-## Getting Started
+## Getting Started (from scratch)
 
-### Frontend
-1. Open a terminal in `spending-app/frontend`
-2. Run `npm install`
-3. Run `npm run dev` to start the React app
+### 1. Clone the repository
+```sh
+git clone <your-repo-url>
+cd spending-app
+```
 
-### Backend
-1. Open a terminal in `spending-app/backend`
-2. Run `dotnet restore`
-3. Run `dotnet run` to start the API
+### 2. Set up the Database
+- Install MySQL (if not already installed)
+- Create a database (e.g., `spending_app`)
+- Create a MySQL user and grant privileges
+- Update `backend/appsettings.Development.json` with your connection string:
+  ```json
+  "ConnectionStrings": {
+    "DefaultConnection": "server=localhost;port=3306;database=spending_app;user=YOURUSER;password=YOURPASSWORD;"
+  }
+  ```
+- Apply migrations:
+  ```sh
+  dotnet ef database update --project backend/backend.csproj --startup-project backend/backend.csproj
+  ```
 
-### Database
-- Set up MySQL locally or in the cloud
-- Add connection details to the backend's `appsettings.json`
+### 3. Set up Mailtrap for Email Testing
+- Sign up at [mailtrap.io](https://mailtrap.io/) and create an inbox
+- Copy SMTP credentials and add to `backend/appsettings.Development.json`:
+  ```json
+  "Mailtrap": {
+    "Host": "sandbox.smtp.mailtrap.io",
+    "Port": 2525,
+    "User": "YOUR_MAILTRAP_USERNAME",
+    "Pass": "YOUR_MAILTRAP_PASSWORD",
+    "From": "no-reply@yourapp.com" // This can be anything, the others, not so much. 
+  }
+  ```
 
-## Features
-- Main page with Login and Sign Up buttons
+### 4. Backend Setup
+```sh
+cd backend
+# Restore dependencies
+ dotnet restore
+# Run the backend
+ dotnet run
+```
+
+### 5. Frontend Setup
+```sh
+cd ../frontend
+npm install
+npm run dev
+```
+- The app will be available at [http://localhost:5173](http://localhost:5173)
+
+### 6. Running Tests
+```sh
+cd ../backend.Tests
+# Run all backend tests
+ dotnet test
+```
+
+### 7. Using the App
+- Register a new user (any email, Mailtrap will catch it)
+- Check your Mailtrap inbox for the confirmation email
+- Click the confirmation link to confirm your email
+- Log in and access protected pages
 
 ---
 
