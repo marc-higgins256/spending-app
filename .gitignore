@@ -26,3 +26,25 @@ yarn-error.log*
 .copilot/
 .github/copilot-instructions.md
 .copilot-instructions.md
+
+# Test results
+TestResults/
+
+# Environment and config files (optional, if you don't want to commit secrets)
+.env
+.env.*
+appsettings.Development.json
+
+# Misc
+*.cache
+*.log
+*.userosscache
+*.sln.docstates
+
+# Ignore backend and frontend build artifacts
+spending-app/backend/bin/
+spending-app/backend/obj/
+spending-app/backend.Tests/bin/
+spending-app/backend.Tests/obj/
+spending-app/frontend/bin/
+spending-app/frontend/obj/

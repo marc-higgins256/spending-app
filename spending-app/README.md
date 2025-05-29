@@ -22,7 +22,7 @@ This is a full-stack project with:
 - Add connection details to the backend's `appsettings.json`
 
 ## Features
-- Main page with Login and Sign Up buttons (to be implemented)
+- Main page with Login and Sign Up buttons
 
 ---
 
