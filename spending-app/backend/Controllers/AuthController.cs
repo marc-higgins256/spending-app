@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace SpendingApp.Backend.Controllers
 {
@@ -45,8 +47,8 @@ namespace SpendingApp.Backend.Controllers
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            // TODO: Send confirmation email here (see below)
-            // await SendConfirmationEmail(user.Email, token);
+            // Send confirmation email here (see below)
+            await SendConfirmationEmail(user.Email, token);
 
             return Ok(new { user.Id, user.Username, user.Email });
         }
@@ -68,9 +70,34 @@ namespace SpendingApp.Backend.Controllers
         // Example email sending method (implement with your SMTP or email provider)
         private async Task SendConfirmationEmail(string email, string token)
         {
-            // var confirmationLink = $"https://yourfrontend.com/confirm?token={token}";
-            // Use SmtpClient or a service like SendGrid/Mailgun here
-            await Task.CompletedTask;
+            var config = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            var smtpHost = config["Mailtrap:Host"];
+            var portString = config["Mailtrap:Port"];
+            int smtpPort = 2525;
+            if (!int.TryParse(portString, out smtpPort))
+            {
+                smtpPort = 2525; // fallback to default Mailtrap port - removes stupid warning
+                // Maybe throw an exception or log a warning here. Should talk to Rab?
+            }
+            var smtpUser = config["Mailtrap:User"];
+            var smtpPass = config["Mailtrap:Pass"];
+            var from = config["Mailtrap:From"];
+
+            var message = new MimeKit.MimeMessage();
+            message.From.Add(new MimeKit.MailboxAddress("Spending App", from));
+            message.To.Add(new MimeKit.MailboxAddress("", email));
+            message.Subject = "Confirm your email";
+            var confirmationLink = $"http://localhost:5173/confirm?token={token}";
+            message.Body = new MimeKit.TextPart("plain")
+            {
+                Text = $"Click the link to confirm your email: {confirmationLink}"
+            };
+
+            using var client = new MailKit.Net.Smtp.SmtpClient();
+            await client.ConnectAsync(smtpHost, smtpPort, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(smtpUser, smtpPass);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
         }
 
         private async Task<IActionResult?> ValidateSignUpAsync(UserDTO uDTO)
