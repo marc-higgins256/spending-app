@@ -57,14 +57,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Register the correct email service depending on environment
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.MockEmailService>();
-}
-else
-{
-    builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.EmailService>();
-}
+// Only use the real EmailService; Moq is used for tests
+builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.EmailService>();
 
 // Add CORS policy for development
 builder.Services.AddCors(options =>
