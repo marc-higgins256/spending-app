@@ -9,7 +9,7 @@ This is a full-stack project with:
 
 ### 1. Clone the repository
 ```sh
-git clone <your-repo-url>
+git clone https://github.com/marc-higgins256/spending-app.git
 cd spending-app
 ```
 
@@ -68,9 +68,9 @@ cd ../backend.Tests
 ### 7. Using the App
 - Register a new user (any email, Mailtrap will catch it)
 - Check your Mailtrap inbox for the confirmation email
-- Click the confirmation link to confirm your email
+- Click the confirmation link/paste the url to confirm your email
 - Log in and access protected pages
 
 ---
 
-For more details, see the subfolder READMEs or code comments.
+For more details, see the subfolder READMEs or code comments(If I've put proper comments).
