@@ -5,9 +5,9 @@ $backendPath = "..\spending-app\backend"
 $frontendPath = "..\spending-app\frontend"
 
 # Start backend
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd $backendPath; dotnet run"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "Push-Location $backendPath; dotnet run; Pop-Location"
 
 # Start frontend
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd $frontendPath; npm run dev"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "Push-Location $frontendPath; npm run dev; Pop-Location"
 
 Write-Host "Backend and frontend are starting in new PowerShell windows."

@@ -6,7 +6,7 @@ dotnet build ../spending-app/backend.Tests/backend.Tests.csproj
 
 # Build frontend (Vite/React)
 Write-Host "Building frontend..."
-cd ../spending-app/frontend
+Push-Location ../spending-app/frontend
 if (Test-Path package.json) {
     if (!(Test-Path node_modules)) {
         Write-Host "Installing frontend dependencies..."
@@ -14,4 +14,4 @@ if (Test-Path package.json) {
     }
     npm run build
 }
-cd ../../scripts
+Pop-Location
