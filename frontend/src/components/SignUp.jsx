@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/SignUp.css';
+import EmailPreview from './EmailPreview';
 
 // SignUp component handles user registration form and submission
 export default function SignUp() {
@@ -9,6 +10,8 @@ export default function SignUp() {
   const [message, setMessage] = useState('');
   // State to indicate loading/submitting status
   const [loading, setLoading] = useState(false);
+  // State to manage email preview for confirmation link
+  const [emailPreview, setEmailPreview] = useState(null);
 
   // Destructure form fields for easy access
   const { username, email, password, confirmPassword } = form;
@@ -23,6 +26,7 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
+    setEmailPreview(null);
     // Basic frontend validation
     if (!username || !email || !password || !confirmPassword) {
       setMessage('All fields are required.');
@@ -42,13 +46,15 @@ export default function SignUp() {
       });
       const data = await res.json();
       if (res.ok) {
-        // Success: clear form and show message
-        setMessage('Sign up successful!');
         setForm({ username: '', email: '', password: '', confirmPassword: '' });
-        // Store JWT if returned (optional, for auto-login)
         if (data.token) {
           localStorage.setItem('token', data.token);
         }
+        // If confirmationLink is present, show the email preview instead of opening a new tab
+        if (data.confirmationLink) {
+          setEmailPreview({ email, confirmationLink: data.confirmationLink });
+        }
+        setMessage('Registration successful! Please confirm your email to activate your account.');
       } else {
         // Show error message from backend or fallback
         setMessage(data.message || data.error || 'Sign up failed.');
@@ -103,6 +109,8 @@ export default function SignUp() {
       </form>
       {/* Show feedback message if present */}
       {message && <div className="signup-message">{message}</div>}
+      {/* Show email preview if present */}
+      {emailPreview && <EmailPreview email={emailPreview.email} confirmationLink={emailPreview.confirmationLink} />}
     </div>
   );
 }

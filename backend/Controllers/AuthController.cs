@@ -49,10 +49,13 @@ namespace SpendingApp.Backend.Controllers
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            // Send confirmation email here (see below)
+            // Build confirmation link for dev/testing
+            var confirmationLink = $"http://localhost:5173/confirm-email?token={token}";
+
+            // Call the email service (mocked in dev)
             await _emailService.SendConfirmationEmail(user.Email, token);
 
-            return Ok(new { user.Id, user.Username, user.Email });
+            return Ok(new { user.Id, user.Username, user.Email, confirmationLink });
         }
 
         [HttpGet("confirm-email")]

@@ -14,7 +14,7 @@ const ConfirmEmail = () => {
       setError("No token provided.");
       return;
     }
-    fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/confirm-email?token=${encodeURIComponent(token)}`)
+    fetch(`/api/auth/confirm-email?token=${encodeURIComponent(token)}`)
       .then(async (res) => {
         if (res.ok) {
           setStatus("success");

@@ -56,7 +56,26 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.EmailService>();
+// Register the correct email service depending on environment
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.MockEmailService>();
+}
+else
+{
+    builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.EmailService>();
+}
+
+// Add CORS policy for development
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 WebApplication app = builder.Build();
 
@@ -64,6 +83,7 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseCors("DevCors");
 }
 
 // app.UseHttpsRedirection();
