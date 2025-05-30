@@ -71,6 +71,30 @@ cd ../backend.Tests
 - Click the confirmation link/paste the url to confirm your email
 - Log in and access protected pages
 
+## Using Project Scripts
+
+Scripts are located in the `scripts/` directory at the root of the repository. These help automate common development tasks:
+
+### Start MySQL Service (requires elevated permissions)
+Start the MySQL service (default: MySQL80) on Windows:
+```powershell
+./scripts/start-mysql.ps1
+```
+
+### Stop MySQL Service (requires elevated permissions)
+Stop the MySQL service:
+```powershell
+./scripts/stop-mysql.ps1
+```
+
+### Start Backend and Frontend Together
+Start both backend and frontend in separate PowerShell windows:
+```powershell
+./scripts/start-all.ps1
+```
+
+- Make sure to run these scripts from a PowerShell terminal. Some scripts may require administrative privileges (e.g., starting/stopping MySQL).
+
 ---
 
 For more details, see the subfolder READMEs or code comments(If I've put proper comments).
