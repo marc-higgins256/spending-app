@@ -98,6 +98,7 @@ namespace backend.Tests
         [Fact]
         public async Task Register_Succeeds_With_New_User()
         {
+            var emailServiceMock = new Moq.Mock<IEmailService>();
             var dbName = $"TestDb_RegisterNew_{Guid.NewGuid()}";
             var factory = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
@@ -108,6 +109,7 @@ namespace backend.Tests
                         if (descriptor != null) services.Remove(descriptor);
                         services.AddDbContext<SpendingApp.Backend.Data.AppDbContext>(options =>
                             options.UseInMemoryDatabase(dbName));
+                        services.AddSingleton<IEmailService>(emailServiceMock.Object);
                     });
                 });
             var client = factory.CreateClient();
@@ -117,6 +119,8 @@ namespace backend.Tests
             var json = await response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>();
             json.TryGetProperty("username", out var usernameProp).Should().BeTrue();
             usernameProp.GetString().Should().Be(registerDto.username);
+            // Optionally verify the email was attempted to be sent
+            emailServiceMock.Verify(x => x.SendConfirmationEmail(registerDto.email, It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
