@@ -1,3 +1,4 @@
+# PSScriptAnalyzerSettings: { "Rules": { "PSUseSetLocationForLocationCmdlet": { "Severity": "None" } } }
 # PowerShell script to start both backend and frontend
 # This script opens each service in a new PowerShell window
 

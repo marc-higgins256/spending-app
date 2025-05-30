@@ -1,3 +1,5 @@
+# PSScriptAnalyzerSettings: { "Rules": { "PSUseSetLocationForLocationCmdlet": { "Severity": "None" } } }
+
 # Build backend and test projects
 Write-Host "Building backend..."
 dotnet build ../spending-app/backend/backend.csproj
