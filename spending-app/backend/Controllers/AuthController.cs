@@ -19,9 +19,11 @@ namespace SpendingApp.Backend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _db;
-        public AuthController(AppDbContext db)
+        private readonly SpendingApp.Backend.Services.IEmailService _emailService;
+        public AuthController(AppDbContext db, SpendingApp.Backend.Services.IEmailService emailService)
         {
             _db = db;
+            _emailService = emailService;
         }
 
         [HttpPost("register")]
@@ -48,7 +50,7 @@ namespace SpendingApp.Backend.Controllers
             await _db.SaveChangesAsync();
 
             // Send confirmation email here (see below)
-            await SendConfirmationEmail(user.Email, token);
+            await _emailService.SendConfirmationEmail(user.Email, token);
 
             return Ok(new { user.Id, user.Username, user.Email });
         }
@@ -65,39 +67,6 @@ namespace SpendingApp.Backend.Controllers
             user.EmailConfirmationTokenExpires = null;
             await _db.SaveChangesAsync();
             return Ok("Email confirmed. You can now log in.");
-        }
-
-        // Example email sending method (implement with your SMTP or email provider)
-        private async Task SendConfirmationEmail(string email, string token)
-        {
-            var config = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var smtpHost = config["Mailtrap:Host"];
-            var portString = config["Mailtrap:Port"];
-            int smtpPort = 2525;
-            if (!int.TryParse(portString, out smtpPort))
-            {
-                smtpPort = 2525; // fallback to default Mailtrap port - removes stupid warning
-                // Maybe throw an exception or log a warning here. Should talk to Rab?
-            }
-            var smtpUser = config["Mailtrap:User"];
-            var smtpPass = config["Mailtrap:Pass"];
-            var from = config["Mailtrap:From"];
-
-            var message = new MimeKit.MimeMessage();
-            message.From.Add(new MimeKit.MailboxAddress("Spending App", from));
-            message.To.Add(new MimeKit.MailboxAddress("", email));
-            message.Subject = "Confirm your email";
-            var confirmationLink = $"http://localhost:5173/confirm?token={token}";
-            message.Body = new MimeKit.TextPart("plain")
-            {
-                Text = $"Click the link to confirm your email: {confirmationLink}"
-            };
-
-            using var client = new MailKit.Net.Smtp.SmtpClient();
-            await client.ConnectAsync(smtpHost, smtpPort, MailKit.Security.SecureSocketOptions.StartTls);
-            await client.AuthenticateAsync(smtpUser, smtpPass);
-            await client.SendAsync(message);
-            await client.DisconnectAsync(true);
         }
 
         private async Task<IActionResult?> ValidateSignUpAsync(UserDTO uDTO)
@@ -141,6 +110,9 @@ namespace SpendingApp.Backend.Controllers
             var passwordHash = HashPassword(loginDto.Password);
             if (user.PasswordHash != passwordHash)
                 return Unauthorized("Invalid username/email or password.");
+
+            if (!user.IsEmailConfirmed)
+                return Unauthorized("Email not confirmed. Please check your inbox and confirm your email before logging in.");
 
             // JWT generation
             var jwtSettings = HttpContext.RequestServices.GetRequiredService<IConfiguration>().GetSection("Jwt");

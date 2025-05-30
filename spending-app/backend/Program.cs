@@ -6,6 +6,7 @@ using System.Text;
 using Pomelo.EntityFrameworkCore.MySql;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +14,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        MySqlServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    ));
+// Allow DB provider to be swapped via environment variable
+var dbProvider = Environment.GetEnvironmentVariable("DB_PROVIDER") ?? "mysql";
+if (dbProvider.ToLower() == "inmemory")
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("TestDb"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseMySql(
+            builder.Configuration.GetConnectionString("DefaultConnection"),
+            MySqlServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+        ));
+}
 
 builder.Services.AddControllers();
 
@@ -44,6 +55,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
+builder.Services.AddScoped<SpendingApp.Backend.Services.IEmailService, SpendingApp.Backend.Services.EmailService>();
 
 WebApplication app = builder.Build();
 
