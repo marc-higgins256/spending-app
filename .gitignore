@@ -48,3 +48,6 @@ spending-app/backend.Tests/bin/
 spending-app/backend.Tests/obj/
 spending-app/frontend/bin/
 spending-app/frontend/obj/
+
+# Ignore Visual Studio workspace folder
+.vs/
