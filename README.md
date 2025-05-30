@@ -15,7 +15,7 @@ cd spending-app
 
 ### 2. Set up the Database
 - Install MySQL (if not already installed)
-- Create a database (e.g., `spending_app`)
+- Create a database (e.g. `spending_app`)
 - Create a MySQL user and grant privileges
 - Update `backend/appsettings.Development.json` with your connection string:
   ```json
